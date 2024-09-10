@@ -30,7 +30,7 @@ jobs:
       
       - name: Run script
         run: python demo.py
-        env:
-          API_TOKEN: ${{ secrets.API_TOKEN }}
-          NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
+        # env:
+        #   API_TOKEN: ${{ secrets.API_TOKEN }}
+        #   NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
 
