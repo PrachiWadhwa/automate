@@ -4,10 +4,10 @@ import os
 
 # Configuration
 api_base_url = "https://api.au0.signalfx.com"
-api_token = "JqjrwXyfdntdeAHBq1vNJQ"
+api_token = os.getenv("NEW_RELIC_API_KEY") 
 metrics_query_endpoint = "/v2/metric"
 new_relic_url = "https://metric-api.newrelic.com/metric/v1"
-new_relic_api_key = "10f9a85486e1a62e0b74726098445c8cFFFFNRAL"
+new_relic_api_key = os.getenv("NEW_RELIC_API_KEY") 
 
 # File to persist sent timestamps
 timestamp_file = "sent_timestamps.json"
