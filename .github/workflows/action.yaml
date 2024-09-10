@@ -1,10 +1,41 @@
+# name: Run Python Script
+
+# on:
+#   schedule:
+    
+#     - cron: '0 * * * *'
+ 
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   run-script:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+      
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.9' 
+      
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install requests
+      
+#       - name: Run script
+#         run: python demo.py
+       
 name: Run Python Script
 
 on:
   schedule:
-    
-    - cron: '0 * * * *'
- 
+    - cron: '0 * * * *'  # Runs at the start of every hour
   workflow_dispatch:
   push:
     branches:
@@ -21,13 +52,23 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9' 
+          python-version: '3.9'
       
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
       
+      - name: Restore sent_timestamps.json
+        uses: actions/download-artifact@v3
+        with:
+          name: sent-timestamps
+          
       - name: Run script
         run: python demo.py
        
+      - name: Save sent_timestamps.json as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sent-timestamps
+          path: sent_timestamps.json
