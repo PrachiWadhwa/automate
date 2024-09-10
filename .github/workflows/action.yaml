@@ -41,7 +41,57 @@
 #           else
 #             echo "sent_timestamps.json does not exist."
 #           fi
-name: Run Python Script
+# name: Run Python Script
+
+# on:
+#   schedule:
+#     - cron: '0 * * * *'  # Runs at the start of every hour
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   run-script:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+      
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.9'
+      
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install requests
+      
+#       - name: Run script
+#         run: python demo.py
+      
+#       - name: List directory contents
+#         run: |
+#           ls -alh
+      
+#       - name: Display contents of sent_timestamps.json (if it exists)
+#         run: |
+#           if [ -f sent_timestamps.json ]; then
+#             echo "Contents of sent_timestamps.json:"
+#             cat sent_timestamps.json
+#           else
+#             echo "sent_timestamps.json does not exist."
+#           fi
+
+#       - name: Upload sent_timestamps.json as artifact
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: sent-timestamps
+#           path: sent_timestamps.json
+
+name: Generate and Upload Artifact
 
 on:
   schedule:
