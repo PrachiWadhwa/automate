@@ -5,10 +5,10 @@ on:
     # This schedule will run the script every day at midnight UTC
     - cron: '* * * * *'
  
-  # workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   run-script:
