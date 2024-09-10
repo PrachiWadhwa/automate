@@ -63,7 +63,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: sent-timestamps
-          
+          path: .
+      
       - name: Run script
         run: python demo.py
        
