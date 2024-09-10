@@ -40,4 +40,4 @@ jobs:
             cat sent_timestamps.json
           else
             echo "sent_timestamps.json does not exist."
-          
+          fi
