@@ -2,7 +2,7 @@ name: Run Python Script
 
 on:
   schedule:
-    # This schedule will run the script every day at midnight UTC
+    
     - cron: '* * * * *'
  
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Specify the Python version you want to use
+          python-version: '3.9' 
       
       - name: Install dependencies
         run: |
@@ -30,7 +30,4 @@ jobs:
       
       - name: Run script
         run: python demo.py
-        # env:
-        #   API_TOKEN: ${{ secrets.API_TOKEN }}
-        #   NEW_RELIC_API_KEY: ${{ secrets.NEW_RELIC_API_KEY }}
-
+       
