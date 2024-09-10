@@ -101,11 +101,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
       
+      - name: Create and activate virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install requests
+
       - name: List directory contents
-        run: ls -alh
-      
+        run: |
+          source venv/bin/activate
+          ls -alh
+          
       - name: Display contents of sent_timestamps.json (if it exists)
         run: |
+          source venv/bin/activate
           if [ -f sent_timestamps.json ]; then
             echo "Contents of sent_timestamps.json:"
             cat sent_timestamps.json
@@ -114,4 +124,6 @@ jobs:
           fi
       
       - name: Run script
-        run: python demo.py
+        run: |
+          source venv/bin/activate
+          python demo.py
