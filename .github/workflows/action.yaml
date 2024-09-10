@@ -68,9 +68,9 @@ jobs:
       
       - name: Display contents of the file (if it exists)
         run: |
-          if [ -f your_file_name.txt ]; then
-            echo "Contents of your_file_name.txt:"
-            cat your_file_name.txt
+          if [ -f .txt ]; then
+            echo "Contents of sent_timestamps.json:"
+            cat sent_timestamps.json
           else
-            echo "your_file_name.txt does not exist."
+            echo "sent_timestamps.json does not exist."
           fi
