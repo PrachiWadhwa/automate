@@ -122,21 +122,6 @@ jobs:
       - name: Run script
         run: python demo.py
       
-      - name: List directory contents
-        run: |
-          ls -alh
       
-      - name: Display contents of sent_timestamps.json (if it exists)
-        run: |
-          if [ -f sent_timestamps.json ]; then
-            echo "Contents of sent_timestamps.json:"
-            cat sent_timestamps.json
-          else
-            echo "sent_timestamps.json does not exist."
-          fi
-
-      - name: Upload sent_timestamps.json as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: sent-timestamps
-          path: sent_timestamps.json
+      
+      
