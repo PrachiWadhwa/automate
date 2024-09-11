@@ -1,3 +1,5 @@
+
+
 import requests
 import json
 import os
@@ -15,7 +17,11 @@ timestamp_file = "sent_timestamps.json"
 def load_sent_timestamps():
     if os.path.exists(timestamp_file):
         with open(timestamp_file, 'r') as file:
-            return set(json.load(file))
+            try:
+                return set(json.load(file))
+            except json.JSONDecodeError:
+                # If file is empty or not valid JSON, return an empty set
+                return set()
     return set()
 
 def save_sent_timestamps(timestamps):
@@ -106,3 +112,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
