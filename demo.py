@@ -1,34 +1,68 @@
-
-
 import requests
 import json
 import os
 
 # Configuration
 api_base_url = "https://api.au0.signalfx.com"
-api_token ="JqjrwXyfdntdeAHBq1vNJQ"
+api_token = "JqjrwXyfdntdeAHBq1vNJQ"
 metrics_query_endpoint = "/v2/metric"
 new_relic_url = "https://metric-api.newrelic.com/metric/v1"
 new_relic_api_key = "10f9a85486e1a62e0b74726098445c8cFFFFNRAL"
 
 # File to persist sent timestamps
-timestamp_file = "sent_timestamps.json"
+timestamp_file = "sent_timestamps.txt"
+
+# def load_sent_timestamps():
+#     """Load the set of sent timestamps from a text file."""
+#     if os.path.exists(timestamp_file):
+#         with open(timestamp_file, 'r') as file:
+#             try:
+#                 # Read all lines from the file and convert them to a set of floats
+#                 return set(float(line.strip()) for line in file)
+#             except ValueError:
+#                 print("If the file contains invalid data, return an empty set")
+#                 return set()
+#     return set()
 
 def load_sent_timestamps():
+    """Load the set of sent timestamps from a text file."""
     if os.path.exists(timestamp_file):
         with open(timestamp_file, 'r') as file:
-            try:
-                return set(json.load(file))
-            except json.JSONDecodeError:
-                # If file is empty or not valid JSON, return an empty set
-                return set()
+            timestamps = set()
+            for line in file:
+                line = line.strip()
+                if not line:  # Skip empty lines
+                    continue
+                try:
+                    # Convert each line to a float and add it to the set
+                    timestamp = float(line)
+                    timestamps.add(timestamp)
+                except ValueError:
+                    # Print an error message and continue if conversion fails
+                    print(f"Warning: Could not convert line to float: '{line}'")
+            return timestamps
+    else:
+        print("The file does not exist.")
     return set()
 
-def save_sent_timestamps(timestamps):
-    with open(timestamp_file, 'w') as file:
-        json.dump(list(timestamps), file)
+
+
+def save_sent_timestamps(new_timestamps):
+    """Append new timestamps to a text file and print it to the console."""
+    # Convert the set to a list of strings for text serialization
+    timestamps_list = [str(ts) for ts in new_timestamps]
+    print("newtimestamplist")
+    print(timestamps_list)
+    # Print the content to the console
+    print("Appending the following timestamps to the file:")
+    print("\n".join(timestamps_list))  # Print each timestamp on a new line
+    
+    # Append the new timestamps to the file
+    with open(timestamp_file, 'a') as file:
+        file.write("\n".join(timestamps_list))
 
 def fetch_metrics():
+    """Fetch metrics from the SignalFx API."""
     url = f"{api_base_url}{metrics_query_endpoint}"
     headers = {
         'Authorization': f'Bearer {api_token}',
@@ -40,7 +74,7 @@ def fetch_metrics():
         response = requests.get(url, headers=headers, params=query_params)
         response.raise_for_status()
         data = response.json()
-        print("Fetched data from Splunk:", json.dumps(data, indent=4))
+        #print("Fetched data from SignalFx:", json.dumps(data, indent=4))
         return data
     except requests.exceptions.HTTPError as http_err:
         print('HTTP error occurred:', http_err)
@@ -52,6 +86,7 @@ def fetch_metrics():
     return None
 
 def transform_metrics(data):
+    """Transform the metrics data to the format required by New Relic."""
     transformed = []
     for metric in data.get('results', []):
         timestamp = metric.get('created', 0) / 1000
@@ -68,6 +103,7 @@ def transform_metrics(data):
     return transformed
 
 def send_to_new_relic(metrics_data):
+    """Send the transformed metrics data to New Relic."""
     headers = {
         'Api-Key': new_relic_api_key,
         'Content-Type': 'application/json'
@@ -84,11 +120,15 @@ def send_to_new_relic(metrics_data):
         print('Request error occurred while sending data to New Relic:', req_err)
 
 def main():
+    """Main function to orchestrate the process."""
+    # Load existing timestamps
     sent_timestamps = load_sent_timestamps()
-    
+    print(sent_timestamps)
+    # Fetch new metrics
     data = fetch_metrics()
 
     if data:
+        # Transform metrics data
         metrics_data = transform_metrics(data)
         
         if metrics_data:
@@ -100,16 +140,17 @@ def main():
                 print("Transformed metrics data:", json.dumps(new_metrics, indent=4))
                 print("\n----------------------------\n")
                 
+                # Send new metrics to New Relic
                 send_to_new_relic(new_metrics)
                 
                 # Update and persist timestamps of sent metrics
-                for metric in new_metrics:
-                    sent_timestamps.add(metric["metrics"][0]["timestamp"])
+                new_timestamps = {metric["metrics"][0]["timestamp"] for metric in new_metrics}
+                print("New timestamp data:", new_timestamps)
                 
-                save_sent_timestamps(sent_timestamps)
+                # Append the new timestamps to the file
+                save_sent_timestamps(new_timestamps)
             else:
                 print("No new metrics to send.")
-
+ 
 if __name__ == "__main__":
     main()
-
