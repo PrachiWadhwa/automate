@@ -12,17 +12,6 @@ new_relic_api_key = "10f9a85486e1a62e0b74726098445c8cFFFFNRAL"
 # File to persist sent timestamps
 timestamp_file = "sent_timestamps.txt"
 
-# def load_sent_timestamps():
-#     """Load the set of sent timestamps from a text file."""
-#     if os.path.exists(timestamp_file):
-#         with open(timestamp_file, 'r') as file:
-#             try:
-#                 # Read all lines from the file and convert them to a set of floats
-#                 return set(float(line.strip()) for line in file)
-#             except ValueError:
-#                 print("If the file contains invalid data, return an empty set")
-#                 return set()
-#     return set()
 
 def load_sent_timestamps():
     """Load the set of sent timestamps from a text file."""
