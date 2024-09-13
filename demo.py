@@ -7,11 +7,10 @@ api_base_url = "https://api.au0.signalfx.com"
 api_token = "JqjrwXyfdntdeAHBq1vNJQ"
 metrics_query_endpoint = "/v2/metric"
 new_relic_url = "https://metric-api.newrelic.com/metric/v1"
-new_relic_api_key = "10f9a85486e1a62e0b74726098445c8cFFFFNRAL"
+new_relic_api_key = "12138cc2cd0b78745bfdac762276329cFFFFNRAL""
 
 # File to persist sent timestamps
 timestamp_file = "sent_timestamps.txt"
-
 
 def load_sent_timestamps():
     """Load the set of sent timestamps from a text file."""
@@ -30,8 +29,7 @@ def load_sent_timestamps():
                     # Print an error message and continue if conversion fails
                     print(f"Warning: Could not convert line to float: '{line}'")
             return timestamps
-    else:
-        print("The file does not exist.")
+
     return set()
 
 
@@ -63,7 +61,7 @@ def fetch_metrics():
         response = requests.get(url, headers=headers, params=query_params)
         response.raise_for_status()
         data = response.json()
-        #print("Fetched data from SignalFx:", json.dumps(data, indent=4))
+        print("Fetched data from SignalFx:", json.dumps(data, indent=4))
         return data
     except requests.exceptions.HTTPError as http_err:
         print('HTTP error occurred:', http_err)
@@ -112,8 +110,8 @@ def main():
     """Main function to orchestrate the process."""
     # Load existing timestamps
     sent_timestamps = load_sent_timestamps()
-    print(sent_timestamps)
-    # Fetch new metrics
+
+     # Fetch new metrics
     data = fetch_metrics()
 
     if data:
@@ -134,7 +132,7 @@ def main():
                 
                 # Update and persist timestamps of sent metrics
                 new_timestamps = {metric["metrics"][0]["timestamp"] for metric in new_metrics}
-                print("New timestamp data:", new_timestamps)
+              
                 
                 # Append the new timestamps to the file
                 save_sent_timestamps(new_timestamps)
