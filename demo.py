@@ -7,7 +7,7 @@ api_base_url = "https://api.au0.signalfx.com"
 api_token = "JqjrwXyfdntdeAHBq1vNJQ"
 metrics_query_endpoint = "/v2/metric"
 new_relic_url = "https://metric-api.newrelic.com/metric/v1"
-new_relic_api_key = "12138cc2cd0b78745bfdac762276329cFFFFNRAL""
+new_relic_api_key = "12138cc2cd0b78745bfdac762276329cFFFFNRAL"
 
 # File to persist sent timestamps
 timestamp_file = "sent_timestamps.txt"
