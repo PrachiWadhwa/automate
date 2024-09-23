@@ -3,7 +3,7 @@ name: Automatically script run after 1hour
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs at the start of every hour
+   # - cron: '0 * * * *'  # Runs at the start of every hour
   workflow_dispatch:
   push:
     branches:
